@@ -18,6 +18,10 @@ class AppData with ChangeNotifier {
 
   StreamController<GoogleSignInAccount> userStream = StreamController();
   GoogleSignInAccount get currentUser => _currentUser;
+  void setUser(GoogleSignInAccount account) {
+    _currentUser = account;
+  }
+
   Future<void> signInWithGoogle() async {
     try {
       _currentUser = await googleSignIn.signIn();

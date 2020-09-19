@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:google_sign_in_workflow/data/appData.dart';
 import 'package:google_sign_in_workflow/pages/auth_page.dart';
 import 'package:google_sign_in_workflow/pages/home_page.dart';
@@ -10,14 +11,19 @@ class Wrapper extends StatefulWidget {
 }
 
 class _WrapperState extends State<Wrapper> {
+  GoogleSignInAccount user;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     var appData = Provider.of<AppData>(context, listen: false);
-    if (appData.currentUser != null) {
-      appData.googleSignIn.signInSilently();
-    }
+    appData.userStream.add(null);
+    appData.googleSignIn.onCurrentUserChanged
+        .listen((GoogleSignInAccount account) {
+      appData.setUser(account);
+      appData.userStream.add(appData.currentUser);
+    });
+    appData.googleSignIn.signInSilently();
   }
 
   @override
@@ -26,7 +32,9 @@ class _WrapperState extends State<Wrapper> {
       body: StreamBuilder(
         stream: Provider.of<AppData>(context, listen: false).userStream.stream,
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          return snapshot.data == null ? AuthPage() : HomePage();
+          return snapshot.connectionState == ConnectionState.waiting
+              ? Container()
+              : snapshot.data == null ? AuthPage() : HomePage();
         },
       ),
     );
