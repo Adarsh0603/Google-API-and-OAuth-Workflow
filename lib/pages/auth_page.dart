@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in_workflow/data/auth.dart';
+import 'package:google_sign_in_workflow/data/appData.dart';
 import 'package:provider/provider.dart';
 
 class AuthPage extends StatelessWidget {

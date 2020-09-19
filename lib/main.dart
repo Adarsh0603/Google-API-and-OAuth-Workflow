@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in_workflow/data/auth.dart';
+import 'package:google_sign_in_workflow/data/appData.dart';
 import 'package:google_sign_in_workflow/pages/wrapper.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         home: Wrapper(),
       ),
