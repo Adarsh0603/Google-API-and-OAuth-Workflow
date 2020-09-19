@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in_workflow/data/auth.dart';
-import 'package:google_sign_in_workflow/pages/home_page.dart';
+import 'package:google_sign_in_workflow/pages/wrapper.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -14,12 +14,12 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (BuildContext context) => Auth(),
+          create: (BuildContext context) => AppData(),
         ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
-        home: HomePage(),
+        home: Wrapper(),
       ),
     );
   }
