@@ -7,20 +7,25 @@ class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.green,
+          title: Text('Sign In'),
+        ),
         body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SignInButton(
-            Buttons.GoogleDark,
-            text: "Sign in with Google",
-            onPressed: () async {
-              await Provider.of<AppData>(context, listen: false)
-                  .signInWithGoogle();
-            },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: 10),
+              SignInButton(
+                Buttons.GoogleDark,
+                text: "Sign in with Google",
+                onPressed: () async {
+                  await Provider.of<AppData>(context, listen: false)
+                      .signInWithGoogle();
+                },
+              ),
+            ],
           ),
-        ],
-      ),
-    ));
+        ));
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:google_sign_in_workflow/data/appData.dart';
+import 'package:google_sign_in_workflow/widgets/project_item.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -10,8 +10,8 @@ class HomePage extends StatelessWidget {
     final appData = Provider.of<AppData>(context, listen: false);
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.orange,
-          title: Text('Firebase Projects'),
+          backgroundColor: Colors.green,
+          title: Text('Firebase Helper'),
           actions: [
             FlatButton(
               child: Text('LOGOUT', style: TextStyle(color: Colors.white)),
@@ -37,36 +37,24 @@ class HomePage extends StatelessWidget {
           future: appData.getData(),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             return snapshot.connectionState == ConnectionState.waiting
-                ? Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
+                ? Align(
+                    alignment: Alignment.bottomCenter,
+                    child: LinearProgressIndicator(
+                      backgroundColor: Colors.white,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
                     ),
                   )
                 : Consumer<AppData>(
                     child: Center(
                         child: Text(
                             'You have no firebase projects\nlinked with this account.')),
-                    builder: (BuildContext context, appData, ch) => appData
-                                .fpList.length ==
-                            0
-                        ? ch
-                        : ListView.builder(
-                            itemCount: appData.fpList.length,
-                            itemBuilder: (ctx, i) => ListTile(
-                                  onTap: () async {
-                                    var url =
-                                        'https://console.firebase.google.com/project/${appData.fpList[i].projectId}/overview';
-                                    if (await canLaunch(url)) {
-                                      await launch(url);
-                                    } else {
-                                      throw 'Could not launch $url';
-                                    }
-                                  },
-                                  leading:
-                                      Image.asset('assets/firebaselogo.png'),
-                                  title: Text(appData.fpList[i].displayName),
-                                  subtitle: Text(appData.fpList[i].projectId),
-                                )),
+                    builder: (BuildContext context, appData, ch) =>
+                        appData.fpList.length == 0
+                            ? ch
+                            : ListView.builder(
+                                itemCount: appData.fpList.length,
+                                itemBuilder: (ctx, i) =>
+                                    ProjectItem(appData.fpList[i])),
                   );
           },
         ));

@@ -20,6 +20,7 @@ class AppData with ChangeNotifier {
   GoogleSignInAccount get currentUser => _currentUser;
   void setUser(GoogleSignInAccount account) {
     _currentUser = account;
+    notifyListeners();
   }
 
   Future<void> signInWithGoogle() async {
@@ -36,7 +37,7 @@ class AppData with ChangeNotifier {
   Future<void> signOut() async {
     googleSignIn.disconnect();
     _firebaseProjectsList = [];
-    userStream.add(null);
+//    userStream.add(null);
     notifyListeners();
   }
 

@@ -3,6 +3,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:google_sign_in_workflow/data/appData.dart';
 import 'package:google_sign_in_workflow/pages/auth_page.dart';
 import 'package:google_sign_in_workflow/pages/home_page.dart';
+import 'package:google_sign_in_workflow/pages/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 class Wrapper extends StatefulWidget {
@@ -20,9 +21,13 @@ class _WrapperState extends State<Wrapper> {
     appData.userStream.add(null);
     appData.googleSignIn.onCurrentUserChanged
         .listen((GoogleSignInAccount account) {
-      appData.setUser(account);
+      print('here');
+      setState(() {
+        appData.setUser(account);
+      });
       appData.userStream.add(appData.currentUser);
     });
+    print('here');
     appData.googleSignIn.signInSilently();
   }
 
@@ -33,7 +38,7 @@ class _WrapperState extends State<Wrapper> {
         stream: Provider.of<AppData>(context, listen: false).userStream.stream,
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           return snapshot.connectionState == ConnectionState.waiting
-              ? Container()
+              ? SplashScreen()
               : snapshot.data == null ? AuthPage() : HomePage();
         },
       ),
