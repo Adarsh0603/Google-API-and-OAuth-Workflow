@@ -11,6 +11,16 @@ class Wrapper extends StatefulWidget {
 
 class _WrapperState extends State<Wrapper> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    var appData = Provider.of<AppData>(context, listen: false);
+    if (appData.currentUser != null) {
+      appData.googleSignIn.signInSilently();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder(

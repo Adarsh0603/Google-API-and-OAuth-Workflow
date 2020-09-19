@@ -31,7 +31,9 @@ class AppData with ChangeNotifier {
 
   Future<void> signOut() async {
     googleSignIn.disconnect();
+    _firebaseProjectsList = [];
     userStream.add(null);
+    notifyListeners();
   }
 
   Future<void> getData() async {
