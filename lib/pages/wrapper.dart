@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:google_sign_in_workflow/data/appData.dart';
 import 'package:google_sign_in_workflow/pages/auth_page.dart';
 import 'package:google_sign_in_workflow/pages/home_page.dart';
