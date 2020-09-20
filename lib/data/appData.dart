@@ -8,26 +8,27 @@ import 'package:http/http.dart' as http;
 
 class AppData with ChangeNotifier {
   List<FirebaseProject> _firebaseProjectsList = [];
-
   List<FirebaseProject> get fpList => _firebaseProjectsList;
 
   GoogleSignInAccount _currentUser;
+  GoogleSignInAccount get currentUser => _currentUser;
 
   GoogleSignIn googleSignIn = GoogleSignIn(
       scopes: ['https://www.googleapis.com/auth/firebase.readonly']);
 
-  StreamController<GoogleSignInAccount> userStream = StreamController();
-  GoogleSignInAccount get currentUser => _currentUser;
-  void setUser(GoogleSignInAccount account) {
-    _currentUser = account;
-    notifyListeners();
+  Stream<GoogleSignInAccount> get user => googleSignIn.onCurrentUserChanged;
+
+  void autoLogin() {
+    googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
+      _currentUser = account;
+      notifyListeners();
+    });
+    googleSignIn.signInSilently();
   }
 
   Future<void> signInWithGoogle() async {
     try {
       _currentUser = await googleSignIn.signIn();
-      print(_currentUser);
-      userStream.add(_currentUser);
       await getData();
     } catch (e) {
       print(e);
@@ -36,8 +37,9 @@ class AppData with ChangeNotifier {
 
   Future<void> signOut() async {
     googleSignIn.disconnect();
+    _currentUser = null;
+
     _firebaseProjectsList = [];
-//    userStream.add(null);
     notifyListeners();
   }
 
